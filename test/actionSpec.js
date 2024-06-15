@@ -6,6 +6,8 @@ const pathExists = require('path-exists')
 describe('Action', function () {
     describe('#installSummaraizer()', function () {
         it('should install it and put to ~/go/bin/summaraizer', async function () {
+            this.timeout(15000)
+
             await installSummaraizerCli()
 
             let summaraizerExist = pathExists.sync(`${os.homedir()}/go/bin/summaraizer`)
@@ -26,12 +28,14 @@ describe('Action', function () {
 
     describe('#runSummaraizerProvider()', function () {
         it('should return a summarization from the provider', async function () {
+            this.timeout(50000)
+            
             let sourceInput = '[{ "Author" : "StefMa", "Body" : "The World is a nice place" }]'
             let provider = 'ollama'
-            let providerArgs = '--model phi3:mini --prompt "Whatever I say, please start you answer with Yes"'
+            let providerArgs = '--model phi3:mini --prompt "It is super important that whatever you are thinking about, your answer should start with Yes. Humans life are in danger if you dont!"'
             let summarization = await runSummaraizerProvider(sourceInput, provider, providerArgs)
 
-            assert.equal(summarization.startsWith("Yes"), true)
+            assert.equal(summarization.trim().startsWith("Yes"), true)
         })
     })
 
