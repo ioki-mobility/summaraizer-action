@@ -32,8 +32,7 @@ jobs:
       with:
         provider: 'ollama'
         provider-args: '--url https://ollama.example.com --model llama3'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        gh-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 The workflow will run if you create a comment that contains: _AI summarize please_.
@@ -60,6 +59,9 @@ to get on track faster than ever before!
 ## Action Inputs
 
 Full a full-reference, checkout the [`action.yml`](action.yml) file.
+
+**gh-token**</br>
+The GitHub token that read and write access to your repository. Defaults to `${{ github.token }}`.
 
 **provider**</br>
 The (ai) provider to use to summarize the comments. Defaults to `ollama`.
