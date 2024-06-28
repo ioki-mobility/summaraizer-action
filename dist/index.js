@@ -12,20 +12,24 @@ const os = __nccwpck_require__(2037)
 async function run() {
     await installSummaraizerCli()
 
+    let ghToken = core.getInput("gh-token", {required: true,})
+    let provider = core.getInput("provider", {required: true,})
+    let providerArgs = core.getInput("provider-args", {required: true,})
+
     let sourceOutput = await runSummaraizerSource(
-        process.env.GITHUB_TOKEN,
+        ghToken,
         github.context.repo.owner,
         github.context.repo.repo,
         github.context.payload.issue.number
     )
     let providerOutput = await runSummaraizerProvider(
         sourceOutput,
-        core.getInput("provider", {required: true,}),
-        core.getInput("provider-args")
+        provider,
+        providerArgs
     )
 
     await comment(
-        process.env.GITHUB_TOKEN,
+        ghToken,
         github.context.repo.owner,
         github.context.repo.repo,
         github.context.payload.issue.number,

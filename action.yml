@@ -1,6 +1,10 @@
 name: 'summaraizer'
 description: 'Summaraizer summarizes your GitHub issues and pull requests discussions'
 inputs:
+  gh-token:
+    description: 'The GitHub token that read and write access to your repository.'
+    required: false
+    default: ${{ github.token }}
   provider:
     description: 'The AI provider to use. Default is openai.'
     required: false
