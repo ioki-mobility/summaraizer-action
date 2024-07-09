@@ -1,7 +1,7 @@
 const {installSummaraizerCli, runSummaraizerSource, runSummaraizerProvider, comment} = require("../action")
 const assert = require('assert')
 const os = require('os')
-const pathExists = require('path-exists')
+const fs = require('fs')
 
 describe('Action', function () {
     describe('#installSummaraizer()', function () {
@@ -10,7 +10,7 @@ describe('Action', function () {
 
             await installSummaraizerCli()
 
-            let summaraizerExist = pathExists.sync(`${os.homedir()}/go/bin/summaraizer`)
+            let summaraizerExist = fs.existsSync(`${os.homedir()}/go/bin/summaraizer`)
             assert.equal(summaraizerExist, true)
         })
     })

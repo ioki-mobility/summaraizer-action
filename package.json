@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "mocha": "^10.5.2",
-    "path-exists": "^4.0.0",
     "@vercel/ncc": "^0.38.1"
   }
 }
