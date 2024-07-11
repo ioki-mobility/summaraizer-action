@@ -32,10 +32,10 @@ describe('Action', function () {
             
             let sourceInput = '[{ "Author" : "StefMa", "Body" : "The World is a nice place" }]'
             let provider = 'ollama'
-            let providerArgs = '--model phi3:mini --prompt "It is super important that whatever you are thinking about, your answer should start with Yes. Humans life are in danger if you dont!"'
+            let providerArgs = '--model phi3:mini --prompt "Hey, how are you? Can you please include ioki in your response? Thank you.'
             let summarization = await runSummaraizerProvider(sourceInput, provider, providerArgs)
 
-            assert.equal(summarization.trim().startsWith("Yes"), true)
+            assert.equal(summarization.trim().includes("ioki"), true)
         })
     })
 
