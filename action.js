@@ -2,13 +2,16 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const exec = require('@actions/exec')
 const os = require('os')
+const fs = require('fs')
+const tc = require('@actions/tool-cache')
 
 async function run() {
-    await installSummaraizerCli()
+    let ghToken = core.getInput("gh-token", {required: true})
+    let summaraizerVersion = core.getInput("summaraizer-version", {required: false})
+    let provider = core.getInput("provider", {required: true})
+    let providerArgs = core.getInput("provider-args", {required: true})
 
-    let ghToken = core.getInput("gh-token", {required: true,})
-    let provider = core.getInput("provider", {required: true,})
-    let providerArgs = core.getInput("provider-args", {required: true,})
+    await installSummaraizerCli(ghToken, summaraizerVersion)
 
     let sourceOutput = await runSummaraizerSource(
         ghToken,
@@ -31,8 +34,58 @@ async function run() {
     )
 }
 
-function installSummaraizerCli() {
-    return exec.exec('go install github.com/ioki-mobility/summaraizer/cmd/summaraizer@85b0914475ae755231446fc5a748f30a23301c36')
+async function installSummaraizerCli(githubToken, summaraizerVersion) {
+    const octokit = github.getOctokit(githubToken)
+    const release = await octokit.rest.repos.getReleaseByTag({
+        owner: 'ioki-mobility',
+        repo: 'summaraizer',
+        tag: summaraizerVersion
+    })
+
+    const assetId = release.data.assets.find(a => a.name === findAssetName())?.id
+    if (!assetId) {
+        throw new Error(`Unable to locate asset for summaraizer release version: ${summaraizerVersion}`)
+    }
+
+    const asset = await octokit.rest.repos.getReleaseAsset({
+        owner: 'ioki-mobility',
+        repo: 'summaraizer',
+        asset_id: assetId
+    })
+
+    const binaryPath = await tc.downloadTool(asset.data.browser_download_url)
+    const permissionsMode = 0o711
+    await fs.chmod(binaryPath, permissionsMode, (err) => {
+    })
+    const cachedPath = await tc.cacheFile(
+        binaryPath,
+        'summaraizer',
+        'summaraizer',
+        summaraizerVersion
+    )
+    core.addPath(cachedPath)
+}
+
+function findAssetName() {
+    const op = os.platform()
+    const arch = os.arch()
+
+    switch (op) {
+        case 'linux':
+            return 'summaraizer-linux-amd64'
+        case 'darwin':
+            switch (arch) {
+                case 'x64':
+                    return 'summaraizer-macos-amd64'
+                case 'arm64':
+                    return 'summaraizer-macos-arm64'
+            }
+            break
+        case 'win32':
+            return 'summaraizer-windows-amd64'
+    }
+
+    throw new Error(`Couldn't find asset name for ${op}-${arch}`)
 }
 
 async function runSummaraizerSource(token, owner, repo, issue_number) {
@@ -44,7 +97,7 @@ async function runSummaraizerSource(token, owner, repo, issue_number) {
             },
         }
     }
-    let command = `${os.homedir()}/go/bin/summaraizer github --issue ${owner}/${repo}/${issue_number} `
+    let command = `summaraizer github --issue ${owner}/${repo}/${issue_number} `
     if (token !== "") {
         command += `--token ${token}`
     }
@@ -63,7 +116,7 @@ async function runSummaraizerProvider(sourceInput, provider, providerArgs) {
         },
         input: Buffer.from(sourceInput)
     }
-    await exec.exec(`${os.homedir()}/go/bin/summaraizer ${provider} ${providerArgs}`, [], options)
+    await exec.exec(`summaraizer ${provider} ${providerArgs}`, [], options)
     return output
 }
 
