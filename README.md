@@ -23,15 +23,11 @@ jobs:
     permissions:
       issues: write
     steps:
-    - name: Install go
-      uses: actions/setup-go@v5
-      with:
-        go-version: 1.22.2
     - name: Summarize
       uses: ioki-mobility/summaraizer-action@main
       with:
         provider: 'ollama'
-        provider-args: '--url https://ollama.example.com --model llama3'
+        provider-args: '--url https://ollama.example.com --model llama3.1'
         gh-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
@@ -44,6 +40,8 @@ Finally, it will create a comment on that issue with the summarization of it.
 Checkout the [summaraizer project](https://github.com/ioki-mobility/summaraizer) for all possible providers and their respective arguments.
 
 Please note that you could also run `ollama` [within your GitHub Action](https://stackoverflow.com/a/78539440).
+
+The permission `issue: write` is required to add the comment to your issue.
 
 ## Why?
 

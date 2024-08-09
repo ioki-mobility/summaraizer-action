@@ -5,12 +5,15 @@ const fs = require('fs')
 
 describe('Action', function () {
     describe('#installSummaraizer()', function () {
-        it('should install it and put to ~/go/bin/summaraizer', async function () {
+        // To run this test locally, you have to set the env variables
+        // `RUNNER_TEMP`, `RUNNER_TOOL_CACHE`, and `GH_TOKEN`.
+        it('should install it and put to RUNNER_TOOL_CACHE', async function () {
             this.timeout(15000)
 
-            await installSummaraizerCli()
+            let githubToken = process.env['GH_TOKEN']
+            await installSummaraizerCli(githubToken, "v0.0.1-alpha.00")
 
-            let summaraizerExist = fs.existsSync(`${os.homedir()}/go/bin/summaraizer`)
+            let summaraizerExist = fs.existsSync(`${process.env['RUNNER_TOOL_CACHE']}/summaraizer/v0.0.1-alpha.00`)
             assert.equal(summaraizerExist, true)
         })
     })
