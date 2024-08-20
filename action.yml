@@ -10,7 +10,7 @@ inputs:
     required: false
     default: 'v0.0.1-alpha.00'
   provider:
-    description: 'The AI provider to use. Default is openai.'
+    description: 'The AI provider to use.'
     required: false
     default: 'ollama'
   provider-args:
