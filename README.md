@@ -61,6 +61,9 @@ Full a full-reference, checkout the [`action.yml`](action.yml) file.
 **gh-token**</br>
 The GitHub token that read and write access to your repository. Defaults to `${{ github.token }}`.
 
+**summaraizer-version**</br>
+The version of the [summaraizer cli](https://github.com/ioki-mobility/summaraizer/releases) that is used. Defaults to `v0.0.1-alpha.00`.
+
 **provider**</br>
 The (ai) provider to use to summarize the comments. Defaults to `ollama`.
 
