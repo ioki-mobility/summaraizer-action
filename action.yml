@@ -2,7 +2,7 @@ name: 'summaraizer'
 description: 'Summaraizer summarizes your GitHub issues and pull requests discussions'
 inputs:
   gh-token:
-    description: 'The GitHub token that read and write access to your repository.'
+    description: 'The GitHub token that requires to have read and write access to your repository.'
     required: false
     default: ${{ github.token }}
   summaraizer-version:
