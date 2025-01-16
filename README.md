@@ -1,4 +1,5 @@
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ioki-mobility/summaraizer-action/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/ioki-mobility/summaraizer-action?include_prereleases)](https://github.com/ioki-mobility/summaraizer-action/releases/latest)
 
 # summaraizer GitHub Action
 
@@ -24,7 +25,7 @@ jobs:
       issues: write
     steps:
     - name: Summarize
-      uses: ioki-mobility/summaraizer-action@main
+      uses: ioki-mobility/summaraizer-action@{latestRelease or main}
       with:
         provider: 'ollama'
         provider-args: '--url https://ollama.example.com --model llama3.1'
@@ -72,8 +73,9 @@ The arguments for the choosen provider. Checkout the [summaraizer documentation]
 
 ## Release
 
-1. Checkout the repo (`git clone ...`)
-2. Install `npm`
-3. Run `npm install`
-4. Run `npm run build`
-5. Push to the repo
+1. Navigate to the [Actions tab](../../actions) in your repository.
+2. Select the ["Create Release" workflow](../../actions/workflows/release.yml).
+3. Click on "Run workflow" and enter the new version number (e.g., `1.2.3`).
+
+The new version tag will be created as well as the **major** tag will be created or updated.
+Also a draft GitHub release will be generated. You can view the releases on the [Releases page](../../releases/latest).
