@@ -1,6 +1,6 @@
 {
   "name": "summaraizer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Summaraizer summarizes your GitHub issues and pull requests discussions",
   "main": "index.js",
   "scripts": {
