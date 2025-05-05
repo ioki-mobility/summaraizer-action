@@ -24,7 +24,7 @@
     "@actions/tool-cache": "^2.0.2"
   },
   "devDependencies": {
-    "mocha": "^11.1.0",
+    "mocha": "^11.2.2",
     "@vercel/ncc": "^0.38.3"
   }
 }
